@@ -70,7 +70,7 @@ No todos los lenguajes orientados a objetos manejan el concepto de clase. Existe
 
 ## 6. ¿Dónde se almacenan en memoria los objetos? ¿Es igual en todos los lenguajes? ¿Qué es la **recolección de basura**? 
 
-### Los objetos se almacenan en una región de memoria llamada **heap** o **montón**. A diferencia de la **pila** (stack), que guarda variables locales primitivas y referencias de forma ordenada y automática, el heap es un área de memoria dinámica y de mayor tamaño donde se alojan los objetos en sí, con un ciclo de vida menos predecible.
+### Los objetos se almacenan en una región de memoria llamada **heap** o **montón**. Otros permiten **heap** y **stack**, a diferencia de la **pila** (stack), que guarda variables locales primitivas y referencias de forma ordenada y automática, el heap es un área de memoria dinámica y de mayor tamaño donde se alojan los objetos en sí, con un ciclo de vida menos predecible. Las ventajas del heap son que: se reserva directamente, el tamaño se decide en gravación. Lo que está en el heap, vive más allá que el método o función donde se ha creado. Desventajas: hay que liberarla cuando ya no se necesita, o bien de forma manual (difícil de leer), o automática (por ejemplo con un **"recolector de basura"**).
 
 El uso del heap para objetos **no es igual en todos los lenguajes**. En lenguajes como Java, C# o Python, esta gestión es automática y el programador no maneja direcciones de memoria directamente. En cambio, en C++, el programador puede decidir explícitamente si un objeto se crea en el heap (con `new`) o en la stack (como variable local), asumiendo también la responsabilidad de liberar esa memoria.
 
@@ -128,7 +128,7 @@ En el ejemplo de uso, se crea un objeto `miPunto` con las coordenadas (3.0, 4.0)
 
 ### El **punto de entrada** en un programa Java es el método `public static void main(String[] args)`. La máquina virtual de Java (JVM) busca y ejecuta este método específico para iniciar el programa.
 
-La palabra clave **`static`** indica que un miembro (método o atributo) **pertenece a la clase misma**, no a ninguna instancia particular de la clase. Esto significa que se puede acceder directamente usando el nombre de la clase (por ejemplo, `Clase.metodo()`), sin necesidad de crear un objeto. En el `main`, `static` es esencial porque la JVM debe poder invocarlo antes de que exista ningún objeto.
+La palabra clave **`static`** indica que un miembro (método o atributo) **pertenece a la clase misma**, no a una instancia concreta. Esto significa que se puede acceder directamente usando el nombre de la clase (por ejemplo, `Clase.metodo()`), sin necesidad de crear un objeto. No existe this, tampoco puedes usar desde un método satic nada que no sea static. En el `main`, `static` es esencial porque la JVM debe poder invocarlo antes de que exista ningún objeto.
 
 **`static` no se emplea solo para `main`**. Se usa comúnmente para:
 1. **Atributos compartidos**: Como contadores o constantes (combinado con `final`).
@@ -148,7 +148,7 @@ Los archivos `.class` contienen el byte-code, que es un conjunto de instruccione
 
 ## 11. En el código anterior de la clase `Punto` ¿Qué es `new`? ¿Qué es un **constructor**? Pon un ejemplo de constructor en una clase `Empleado` que tenga DNI, nombre y apellidos
 
-### La palabra clave **`new`** es el operador en Java que **solicita memoria en el heap** para crear una nueva instancia (objeto) de una clase. Su ejecución desencadena la llamada al **constructor** de dicha clase, que es un método especial encargado de **inicializar el estado** del objeto recién asignado.
+### La palabra clave **`new`** es el operador en Java que **solicita memoria en el heap** para crear una nueva instancia (objeto) de una clase. Su ejecución desencadena la llamada al **constructor** de dicha clase, que es un método especial encargado de **inicializar el estado** del objeto recién asignado. Es una expresión (puedo asignarla a una variable, o usarla directamente en linea)
 
 Un **constructor** es un método especial que tiene el **mismo nombre que la clase** y **no tiene tipo de retorno** (ni siquiera `void`). Su propósito principal es asignar valores iniciales a los atributos del objeto al ser creado. Si no se define explícitamente, el compilador proporciona un **constructor por defecto** sin parámetros. Es común definir constructores con parámetros para obligar a una inicialización específica.
 
@@ -178,7 +178,7 @@ En este ejemplo, `new Empleado(...)` asigna memoria para un nuevo objeto y el co
 
 ## 12. ¿Qué es la referencia `this`? ¿Se llama igual en todos los lenguajes? Pon un ejemplo del uso de `this` en la clase `Punto`
 
-### La referencia **`this`** es una **palabra clave** en Java que, dentro de un método de instancia o un constructor, hace referencia al **objeto actual** en el que se está ejecutando el código. Su función principal es eliminar ambigüedades cuando un parámetro o variable local tiene el mismo nombre que un atributo de la clase, permitiendo distinguir entre ellos. Por ejemplo, en un constructor `public Punto(double x, double y)`, usar `this.x = x` asigna el valor del parámetro `x` al atributo `x` del objeto que se está construyendo.
+### La referencia **`this`** es una **palabra clave** en Java que, dentro de un método de instancia o un constructor, hace referencia al **objeto actual** en el que se está ejecutando el código. Su función principal es **eliminar ambigüedades** o aclarar cuando un parámetro o variable local tiene el mismo nombre que un atributo de la clase, permitiendo distinguir entre ellos. No está disponible en métodos static. Por ejemplo, en un constructor `public Punto(double x, double y)`, usar `this.x = x` asigna el valor del parámetro `x` al atributo `x` del objeto que se está construyendo.
 
 **No se llama igual en todos los lenguajes**. Otros lenguajes orientados a objetos utilizan palabras clave diferentes para el mismo propósito: en **C++** y **C#** también se usa `this`, aunque en C++ es un puntero. En **Python**, la referencia al objeto actual es el primer parámetro explícito de los métodos, convencionalmente llamado `self`. En **JavaScript**, se utiliza `this`, pero su comportamiento y valor pueden variar más dependiendo del contexto de ejecución.
 
@@ -212,7 +212,8 @@ En este ejemplo, `this` es **obligatorio** en el constructor para evitar la ambi
 
 ## 13. Añade ahora otro nuevo método que se llame `distanciaA`, que reciba un `Punto` como parámetro y calcule la distancia entre `this` y el punto proporcionado
 
-### ```java
+### 
+```java
 public class Punto {
     double x;
     double y;
@@ -251,6 +252,8 @@ El método `distanciaA` aplica la fórmula de distancia euclidiana entre dos pun
 Cuando se pasa un objeto de tipo `Punto` como parámetro, se copia **el valor de la referencia** (la dirección de memoria) al objeto. Dentro del método, se está trabajando con una **copia de esa referencia**, que sigue apuntando al **mismo objeto original** en el heap. Por tanto, si dentro del método se modifican los atributos del objeto recibido (ej: `otro.x = 10;`), esos cambios **afectan directamente al objeto original** fuera del método, porque se ha accedido al mismo espacio de memoria. No obstante, si dentro del método se reasigna la propia referencia (ej: `otro = new Punto();`), esa reasignación solo afecta a la copia local de la referencia, **no al objeto original ni a la referencia externa**.
 
 Cuando se pasa un tipo primitivo como un `int`, se copia directamente **su valor numérico**. Cualquier modificación dentro del método (ej: `valor = 20;`) se realiza sobre esa copia local y **no tiene ningún efecto** sobre la variable original fuera del método. Esto se debe a que no existe un concepto de referencia para los tipos primitivos; se copia únicamente el dato.
+
+Primitivos (por valor). Objetos (por referencia, copia de la...). 
 
 En resumen: en Java, el paso es siempre **por valor**, pero para objetos ese valor es una **referencia**, lo que permite modificar su estado interno. Para tipos primitivos, el valor es el dato en sí, por lo que las modificaciones son locales.
 
