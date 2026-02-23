@@ -16,7 +16,7 @@ Por favor, escribe en impersonal las respuestas.
 
 ## 1. En Programación Orientada a Objetos (POO), ¿Qué buscan la **encapsulación** y **la ocultación** de información? Enumera brevemente algunas ventajas de la ocultación de información.
 
-### En la Programación Orientada a Objetos (POO), la **encapsulación** busca agrupar los datos (atributos) y los métodos (operaciones) que actúan sobre esos datos en una única unidad lógica llamada **clase**. Esto permite modelar entidades del mundo real como objetos autocontenidos, donde el estado y el comportamiento están estrechamente vinculados. Por su parte, la **ocultación de información** es el principio complementario que consiste en **restringir el acceso directo a los detalles internos** (implementación) de un objeto, exponiendo solo una **interfaz pública** controlada de métodos para interactuar con él. Mientras la encapsulación es el "cómo" se empaqueta, la ocultación es el "qué" se oculta y "por qué".
+### En la Programación Orientada a Objetos (POO), la **encapsulación** busca agrupar los datos (atributos) y los métodos (operaciones) que actúan sobre esos datos en una única unidad lógica llamada **clase**. Esto permite modelar entidades del mundo real como objetos autocontenidos, donde el estado y el comportamiento están estrechamente vinculados. Tiene que ver con "Protección". Evita estados no válidos de mis objetos. También evita dependencias desde fuera que no se quieren. Por su parte, la **ocultación de información** es el principio complementario que consiste en **restringir el acceso directo a los detalles internos** (implementación) de un objeto, exponiendo solo una **interfaz pública** controlada de métodos para interactuar con él. Mientras la encapsulación es el "cómo" se empaqueta, la ocultación es el "qué" se oculta y "por qué".
 
 El objetivo principal de esta combinación es lograr un **acoplamiento bajo** entre diferentes partes del sistema. Al ocultar la implementación, se evita que el código cliente dependa de los detalles internos de una clase, los cuales pueden cambiar. Esto permite **modificar la implementación interna** de una clase (por ejemplo, cambiar el tipo de un atributo o la lógica de un algoritmo) sin afectar a ningún otro componente del programa que use esa clase, siempre que la interfaz pública (los métodos visibles) se mantenga constante.
 
@@ -29,7 +29,7 @@ Algunas ventajas clave de la ocultación de información son:
 
 ## 2. ¿Qué se entiende por la **interfaz pública** de un objeto o clase en POO? Describe brevemente cómo se relaciona con la ocultación de información.
 
-### La **interfaz pública** de una clase es el conjunto de **métodos y atributos declarados como públicos** (`public`) a través de los cuales otros objetos pueden interactuar con ella. Define **qué puede hacer** el objeto (su contrato o comportamiento observable), pero **oculta cómo lo hace** (su implementación interna).
+### La **interfaz pública** de una clase es el conjunto de **métodos y atributos declarados como públicos** (los miembros), (`public`) a través de los cuales otros objetos pueden interactuar con ella desde fuera, es decir, los que no están ocultos. Define **qué puede hacer** el objeto (su contrato o comportamiento observable), pero **oculta cómo lo hace** (su implementación interna).
 
 Se relaciona directamente con la ocultación de información porque actúa como una **barrera controlada**. Todo lo que está fuera de esta interfaz (atributos privados, métodos internos) está **oculto** y protegido de acceso externo directo. Esto permite cambiar la implementación interna con total libertad, siempre que se mantenga estable la interfaz pública que el resto del programa usa.
 
@@ -38,12 +38,12 @@ Se relaciona directamente con la ocultación de información porque actúa como 
 
 ### Hay que diseñar con cuidado la interfaz pública porque **define el contrato estable** que el resto del sistema usará para interactuar con la clase. Una interfaz bien diseñada es clara, mínima y cumple un propósito cohesivo, lo que facilita su comprensión y uso correcto.
 
-No es fácil cambiarla una vez el sistema está en desarrollo, especialmente si otras clases o módulos ya dependen de ella. Modificarla (cambiar nombres de métodos, parámetros o tipos de retorno) suele **romper el código cliente** existente, forzando cambios costosos en cascada. Por ello, la interfaz pública debe ser estable y pensada a largo plazo, mientras que la implementación interna puede evolucionar libremente.
+No es fácil cambiarla una vez el sistema está en desarrollo, especialmente si otras clases o módulos ya dependen de ella. Modificarla (cambiar nombres de métodos, parámetros o tipos de retorno) suele **romper el código cliente** existente, forzando cambios costosos en cascada. Por ello, la interfaz pública debe ser estable y pensada a largo plazo, mientras que la implementación interna puede evolucionar libremente. Si se cambia tiene más consecuencias que cualquier cambio en la parte oculta.
 
 
 ## 4. ¿Qué son las **invariantes de clase** y por qué la ocultación de información nos ayuda?
 
-### Las **invariantes de clase** son **condiciones o reglas lógicas** que deben ser ciertas para un objeto durante toda su vida (excepto durante la ejecución de un método). Definen un **estado interno consistente y válido**. Por ejemplo, para una clase `CuentaBancaria`, un invariante podría ser "el atributo `saldo` nunca debe ser negativo".
+### Las **invariantes de clase** son **condiciones o reglas lógicas** que deben cumplir y ser válidas para un objeto durante toda su vida (excepto durante la ejecución de un método). Definen un **estado interno consistente y válido**. Por ejemplo, para una clase `CuentaBancaria`, un invariante podría ser "el atributo `saldo` nunca debe ser negativo". Persona debe de tener edad >= 0.
 
 La ocultación de información ayuda a **garantizar** estos invariantes. Al hacer los atributos privados y solo permitir su modificación a través de métodos públicos (como `ingresar()` o `retirar()`), la clase puede **validar y controlar** cada cambio de estado. Esto impide que código externo establezca directamente valores inválidos (ej: `cuenta.saldo = -100;`), protegiendo así la integridad del objeto y asegurando que los invariantes se mantengan siempre.
 
@@ -66,10 +66,6 @@ public class Punto {
     public double calcularDistanciaAOrigen() {
         return Math.sqrt(x * x + y * y);
     }
-
-    // Getters públicos: interfaz para consulta controlada
-    public double getX() { return x; }
-    public double getY() { return y; }
 }
 
 
@@ -89,7 +85,7 @@ Su uso estratégico es la base de la ocultación de información. Los atributos 
 
 ## 7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad? ¿Qué ocurre en Java? ¿Y en otros lenguajes?
 
-### En POO existen más tipos de visibilidad. En **Java**, además de `public` y `private`, están **`protected`** y el **modificador por defecto (package-private)**. `protected` permite acceso desde la misma clase, clases del mismo paquete y cualquier subclase (heredera). El modificador por defecto (sin palabra clave) permite acceso solo desde clases del **mismo paquete**.
+### En POO existen más tipos de visibilidad. En **Java**, además de `public` y `private`, están **`protected`** y el **modificador por defecto (package-private)**. `protected` permite acceso desde la misma clase, clases del mismo paquete y cualquier subclase (heredera), solo se ve desde "subclase". El modificador por defecto (sin palabra clave) permite acceso solo desde clases del **mismo paquete**.
 
 **Otros lenguajes tienen modelos distintos**. En **C++** existen `public`, `private`, `protected` y `friend` (que otorga acceso a funciones/clases específicas). En **C#** tiene niveles similares a Java, añadiendo `internal` (acceso dentro del mismo ensamblado) e `protected internal`. **Python** no tiene palabras clave para esto; por convención, un guion bajo `_` al inicio del nombre sugiere que un miembro es "privado", pero es solo una indicación, no una restricción del lenguaje.
 
@@ -120,7 +116,7 @@ public class Punto {
 
 ## 9. ¿Qué son los métodos "getter" y "setter" en los lenguajes orientados a objetos?
 
-### Los métodos **getter** y **setter** son métodos públicos que proporcionan **acceso controlado** a los atributos privados de una clase. Un **getter** (o *accesor*) **devuelve el valor** de un atributo privado. Un **setter** (o *mutador*) **modifica el valor** de un atributo privado, pudiendo incluir validaciones.
+### Los métodos **getter** y **setter** son métodos públicos que proporcionan **acceso controlado** a los atributos privados de una clase para obtener su valor o cambiarlo. Un **getter** (o *accesor*) **devuelve el valor** de un atributo privado. Un **setter** (o *mutador*) **modifica el valor** de un atributo privado, pudiendo incluir validaciones.
 
 Son un mecanismo fundamental de la encapsulación. En lugar de exponer los atributos directamente como públicos, se ofrecen estos métodos como parte de la interfaz. Esto permite **validar datos** (ej: impedir valores negativos), **controlar cambios** (ej: notificar a otros componentes) o **calcular valores on-demand** (ej: edad a partir de fecha de nacimiento), manteniendo oculta la representación interna.
 
@@ -133,7 +129,7 @@ public void setX(double x) { this.x = x; } // Setter: modificación simple
 
 ## 10. Cuando nos referimos a que la ocultación de información mejora la "seguridad" del programa, ¿nos referimos a que no pueda ser "hackeado"?
 
-### No, normalmente no se refiere a seguridad contra hackers o ataques externos. La "seguridad" en este contexto se refiere a la **integridad y consistencia interna** del programa y al **control de acceso** dentro del propio código.
+### No, esto no es ciberseguridad, es facilitar una programación con menos bugs, normalmente no se refiere a seguridad contra hackers o ataques externos. La "seguridad" en este contexto se refiere a la **integridad y consistencia interna** del programa y al **control de acceso** dentro del propio código.
 
 La mejora es principalmente de **diseño y mantenimiento**. Al restringir el acceso directo a los datos internos, se evita que otras partes del programa (escritas por otros desarrolladores o por uno mismo) **modifiquen accidentalmente el estado de un objeto de forma inconsistente o inválida**. Por ejemplo, se impide que se asigne un valor negativo al saldo de una `CuentaBancaria` si no pasa por un método `retirar()` que valide la operación. Esto **previene errores** y hace que el comportamiento del programa sea más predecible y fácil de razonar, lo que a su vez reduce "bugs".
 
@@ -142,7 +138,7 @@ En resumen, es una **seguridad a nivel de abstracción del software**, no de cib
 
 ## 11. ¿Qué diferencia hay entre **miembro de instancia** y **miembro de clase**? ¿Los miembros de clase también se pueden ocultar?
 
-### La diferencia fundamental es que un **miembro de instancia** (atributo o método no estático) pertenece a **cada objeto individual** creado a partir de la clase. Cada instancia tiene su propia copia de los atributos de instancia y los métodos operan sobre el estado de ese objeto concreto. En cambio, un **miembro de clase** (atributo o método declarado con `static`) pertenece a la **clase en sí misma**, es compartido por todas las instancias y existe incluso si no se crea ningún objeto.
+### La diferencia fundamental es que un **miembro de instancia** (atributo o método no estático) pertenece a **cada objeto individual** (instancia) creado a partir de la clase, no son compartidos. En métodos no hay this. Cada instancia tiene su propia copia de los atributos de instancia y los métodos operan sobre el estado de ese objeto concreto. En cambio, un **miembro de clase** (atributo o método declarado con `static`) pertenece a la **clase en sí misma**, es compartido por todas las instancias y existe incluso si no se crea ningún objeto, no está asociado a ninguna instancia.
 
 **Sí, los miembros de clase también se pueden y deben ocultar** aplicando los mismos modificadores de acceso (`private`, `protected`). Un atributo `static` privado es común para toda la clase pero solo es accesible desde dentro de ella, típicamente usado para constantes (`private static final`) o contadores internos compartidos. Un método `static` privado sirve como función auxiliar interna de la clase. La ocultación protege estos miembros compartidos del mismo modo que protege el estado de los objetos individuales.
 
@@ -155,7 +151,9 @@ Los casos más comunes son:
 1.  **Clases utilitarias o de constantes**: Una clase que solo agrupa métodos estáticos (`Math`) o constantes (`public static final`). Un constructor privado impide la instanciación, forzando el uso directo de la clase (ej: `Math.sqrt()`).
 2.  **Patrón Singleton**: Garantiza que una clase tenga **una única instancia** en todo el programa. El constructor es privado y se proporciona un método estático público (`getInstance()`) que controla la creación y devuelve siempre el mismo objeto.
 3.  **Patrón Factory Method**: La creación de objetos se delega a un método estático público de la propia clase (un "método fábrica"), que puede tener un nombre más descriptivo, realizar lógica compleja antes de la construcción o devolver subclases diferentes. El constructor privado obliga a usar este método.
-
+- Un constructor auxiliar oculto, llamado desde otros constructores públicos.
+- Cuando prefiero usar métodos factoría.
+- Cuando quiero controlar el número de instancias.
 
 ## 13. ¿Cómo se indican los **miembros de clase** en Java? Pon un ejemplo, en la clase `Punto` definida anteriormente, para que incluya miembros de clase que permitan saber cuáles son los valores `x` e `y` máximos que se han establecido en todos los puntos que se hayan creado hasta el momento.
 
@@ -202,9 +200,7 @@ Los atributos `maxX` y `maxY` son `static`, por lo que **existe una única copia
 
 ### ```java
 public static Punto crearPuntoRedondeado(double x, double y) {
-    long xRedondeado = Math.round(x);
-    long yRedondeado = Math.round(y);
-    return new Punto((double) xRedondeado, (double) yRedondeado);
+    return new Punto(Math.round(x), Math.round(y));
 }
 
 **Sí, se ha declarado con `static`.** Es un **método de clase** porque su lógica no depende del estado de ningún objeto `Punto` en particular. Su función es crear y devolver una nueva instancia, por lo que debe poder invocarse directamente desde la clase, por ejemplo: `Punto p = Punto.crearPuntoRedondeado(3.7, 4.2);
@@ -224,8 +220,8 @@ public class Punto {
     }
 
     // Getters: la interfaz no cambia
-    public double getX() { return coordenadas[0]; }
-    public double getY() { return coordenadas[1]; }
+    public double getX() { return this.coordenadas[0]; }
+    public double getY() { return this.coordenadas[1]; }
 
     // Setters (si existieran): la interfaz no cambia
     public void setX(double x) { this.coordenadas[0] = x; }
@@ -233,8 +229,8 @@ public class Punto {
 
     // Métodos como calcularDistanciaAOrigen usan la nueva implementación interna
     public double calcularDistanciaAOrigen() {
-        return Math.sqrt(coordenadas[0] * coordenadas[0] + 
-                         coordenadas[1] * coordenadas[1]);
+        return Math.sqrt(this.getX() * this.getX() + 
+                         this.getY() * this.getY());
     }
 
     // ... El resto de métodos públicos (distanciaAPunto, etc.) 
@@ -246,9 +242,9 @@ public class Punto {
 
 ## 16. Si un atributo va a tener un método "getter" y "setter" públicos, ¿no es mejor declararlo público? ¿Cuál es la convención más habitual sobre los atributos, que sean públicos o privados? ¿Tiene esto algo que ver con las "invariantes de clase"?
 
-### No es mejor declararlo público, aunque superficialmente parezca equivalente. La diferencia crucial es el **control**. Un atributo público permite acceso directo y sin restricciones. Un getter/setter es un **punto de control** donde se puede añadir validación, lógica (como notificaciones), cambiar la representación interna o hacer el atributo de solo lectura (omitir el setter).
+### No es mejor declararlo público, aunque superficialmente parezca equivalente. La diferencia crucial es el **control**. Un atributo público permite acceso directo y sin restricciones. Además para poder garantizar la variante de clase. Un getter/setter es un **punto de control** donde se puede añadir validación, lógica (como notificaciones), cambiar la representación interna o hacer el atributo de solo lectura (omitir el setter).
 
-La convención más estricta y habitual en Java (y POO en general) es que **los atributos deben ser siempre privados**. Este es un principio de diseño robusto, no solo una sugerencia. Los getters/setters se proporcionan solo cuando es necesario para la interfaz pública.
+La convención más estricta y habitual en Java (y POO en general) es que **los atributos deben ser siempre privados** y emplea métodos de acceso. Este es un principio de diseño robusto, no solo una sugerencia. Los getters/setters se proporcionan solo cuando es necesario para la interfaz pública.
 
 Esto tiene **todo que ver con las invariantes de clase**. Si un atributo es público, cualquier código externo puede ponerlo en un estado inválido, rompiendo los invariantes. Un setter privado permite **validar** el nuevo valor antes de asignarlo (ej: lanzar una excepción si es negativo) y así garantizar que el invariante se mantenga. Un getter puede incluso calcular o formatear el dato al devolverlo, sin alterar la representación interna.
 
@@ -257,12 +253,13 @@ Esto tiene **todo que ver con las invariantes de clase**. Si un atributo es púb
 
 ### Una clase **inmutable** es aquella cuyos **objetos no pueden modificar su estado interno** después de ser creados. Todos sus atributos son `final` (o equivalentemente, no hay métodos que los cambien). Si se necesita un objeto con un valor diferente, se debe crear uno nuevo.
 
-Un **método modificador** es cualquier método que **altera el estado** de un objeto (como un `setter`). No todos los métodos modificadores son setters: un método `aumentarSaldo(double cantidad)` es modificador pero tiene lógica adicional. Sí, un **setter es siempre un método modificador**, ya que su único propósito es cambiar un atributo.
+Un **método modificador** es cualquier método que **altera el estado interno** de un objeto (como un `setter`). No todos los métodos modificadores son setters: un método `aumentarSaldo(double cantidad)` es modificador pero tiene lógica adicional. Sí, un **setter es siempre un método modificador**, ya que su único propósito es cambiar un atributo.
 
 **Ventajas de la inmutabilidad**:
 1.  **Seguridad y simplicidad**: Los objetos no cambian, por lo que son **seguros para compartir** entre hilos (thread-safe) sin sincronización y su comportamiento es predecible.
 2.  **Fiabilidad**: Se garantiza que los invariantes de clase se mantendrán durante toda la vida del objeto.
 3.  **Facilita el razonamiento**: Al no haber cambios de estado ocultos, el código es más fácil de entender y depurar.
+4.  -No hacer clases mutables como primera opción
 
 Ejemplo de `Punto` inmutable en Java:
 ```java
