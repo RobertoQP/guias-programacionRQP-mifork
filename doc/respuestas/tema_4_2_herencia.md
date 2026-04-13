@@ -18,6 +18,8 @@ La herencia es un mecanismo fundamental en orientación a objetos que permite de
 
 La herencia tiene dos implicaciones principales. La primera es la **compatibilidad de tipos** (polimorfismo), que permite tratar a un objeto de una subclase como si fuera de su superclase. Esto significa que una variable declarada del tipo `Soldado` puede referenciar tanto a objetos `Artillero` como `Zapador`, lo que facilita la creación de código genérico y reutilizable. La segunda implicación es la **herencia de estado y comportamiento**, donde la subclase automáticamente posee todos los atributos y métodos de la superclase que no sean privados, pudiendo añadir nuevos o modificar los existentes (sobrescritura). Así se evita duplicar código y se favorece la reutilización.
 
+Composicion: "tiene un/ tiene varios" vs Herencia: "es un"
+
 A continuación se muestra un ejemplo sencillo en Java que ilustra estos conceptos:
 
 ```java
@@ -48,7 +50,7 @@ public class Artillero extends Soldado {
     }
     
     public int getNumCohetes() {
-        return numCohetes;
+        return this.numCohetes;
     }
 }
 
@@ -167,7 +169,7 @@ A continuación se muestra un ejemplo que recorre un array de `Soldado`, verific
 public class Main {
     public static void main(String[] args) {
         Soldado[] ejercito = new Soldado[4];
-        ejercito[0] = new Artillero("Juan", 10);
+        ejercito[0] = new Artillero("Juan", 10); //upcasting
         ejercito[1] = new Zapador("Pedro", 5);
         ejercito[2] = new Artillero("Ana", 8);
         ejercito[3] = new Francotirador("Carlos", 500);
