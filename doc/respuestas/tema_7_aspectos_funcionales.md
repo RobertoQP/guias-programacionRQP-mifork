@@ -48,6 +48,14 @@ int main() {
 
 En este caso, `aMayusculasPtr` es el puntero a función que apunta a `aMayusculas`, y la invocación `aMayusculasPtr(texto)` ejecuta la función de forma indirecta, produciendo la conversión de la cadena a mayúsculas.
 
+Las funciones son "ciudadanos de primera clase". Una función es un tipo más:
+- Se puede asignar una variable.
+- Se puede pasar como parámetro.
+- Se puede devolver una función como retorno de otra.
+- Closure. 
+- Expresiones lambda (no tiene nombre).
+- En lenguajes con comprobación estática de tipos: ¿Qué tipo tienen?
+
 ## 2. ¿Qué es una **función lambda** en un lenguaje de programación? Pon un ejemplo similar al anterior en Javascript y otro en Java con funciones lambda. Usa una variable local `aMayusculas` para apuntar a la función lambda. Por simplicidad, en Java, emplea `Function<String, String>` para el tipo de la referencia a la función lambda.
 
 Una función lambda es una función anónima, es decir, una función que no tiene nombre explícito y que puede definirse directamente en una expresión. Este tipo de funciones se utilizan para representar comportamiento como si fuera un valor, lo que permite pasarlas como argumentos, almacenarlas en variables o devolverlas desde otras funciones.
@@ -91,6 +99,11 @@ Se dice que las funciones son *ciudadanos de primera clase* cuando pueden tratar
 
 Esta propiedad es fundamental para el paradigma funcional, ya que permite construir abstracciones de alto nivel basadas en comportamiento. En lugar de centrarse únicamente en datos y objetos, se puede manipular directamente la lógica como si fuera un dato más, lo que facilita la composición de funciones y la creación de programas más modulares y reutilizables.
 
+Function <E,S>: apply(E): S
+BiFunction<E1, E2, S>: apply(E1, E2): S
+Supplier<T>: get(); T
+Consumer<T>: acept(T): void
+Predicate<T>: test(T): bool
 
 ## 4. Explica la sintaxis básica de una función lambda en Java.
 
