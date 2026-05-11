@@ -51,10 +51,14 @@ En este caso, `aMayusculasPtr` es el puntero a función que apunta a `aMayuscula
 Las funciones son "ciudadanos de primera clase". Una función es un tipo más:
 - Se puede asignar una variable.
 - Se puede pasar como parámetro.
+- Recibidas como respuesta.
+
+- Expresiones lambda (no tiene nombre, son anónimas) (parametro) -> {cuerpo}
 - Se puede devolver una función como retorno de otra.
 - Closure. 
-- Expresiones lambda (no tiene nombre).
 - En lenguajes con comprobación estática de tipos: ¿Qué tipo tienen?
+- Y si el lenguaje es estáticamente tipado. En Java, interfaces funcionales, es una interfaz con "solo 1" * método abstracto.
+
 
 ## 2. ¿Qué es una **función lambda** en un lenguaje de programación? Pon un ejemplo similar al anterior en Javascript y otro en Java con funciones lambda. Usa una variable local `aMayusculas` para apuntar a la función lambda. Por simplicidad, en Java, emplea `Function<String, String>` para el tipo de la referencia a la función lambda.
 
@@ -99,11 +103,13 @@ Se dice que las funciones son *ciudadanos de primera clase* cuando pueden tratar
 
 Esta propiedad es fundamental para el paradigma funcional, ya que permite construir abstracciones de alto nivel basadas en comportamiento. En lugar de centrarse únicamente en datos y objetos, se puede manipular directamente la lógica como si fuera un dato más, lo que facilita la composición de funciones y la creación de programas más modulares y reutilizables.
 
-Function <E,S>: apply(E): S
-BiFunction<E1, E2, S>: apply(E1, E2): S
-Supplier<T>: get(); T
-Consumer<T>: acept(T): void
-Predicate<T>: test(T): bool
+Function <E,S>: S apply(E e);
+BiFunction<E1, E2, S>: S apply(E1 e1, E2 e2);
+Supplier<T>: T get();
+Consumer<T>: void acept(T);
+BiConsumer<T1, T2>: void acept (T1 t1, T2, t2);
+Predicate<T>: boolean test(T t)
+Runable: void run();
 
 ## 4. Explica la sintaxis básica de una función lambda en Java.
 
@@ -303,6 +309,17 @@ El closure en este caso consiste en que cada función de descuento “captura”
 Una interfaz funcional en Java es una interfaz que contiene **exactamente un método abstracto**. Puede contener múltiples métodos `default` o `static`, así como métodos heredados de la clase `Object` (como `equals`, `toString` o `hashCode`), ya que estos no cuentan como métodos abstractos a efectos de la definición de interfaz funcional. Este único método abstracto define el contrato que podrá ser implementado mediante una expresión lambda o una referencia a método, permitiendo tratar funciones como ciudadanos de primera clase en el lenguaje. El propósito fundamental de las interfaces funcionales es habilitar la programación funcional dentro del paradigma orientado a objetos de Java, proporcionando un sistema de tipos seguro para las expresiones lambda.
 
 El requisito principal es tener un único método abstracto, aunque Java proporciona la anotación opcional `@FunctionalInterface` para marcar explícitamente que una interfaz está diseñada para ser funcional. Esta anotación no es obligatoria, pero si se utiliza, el compilador generará un error si la interfaz no cumple con el requisito de tener exactamente un método abstracto. Además, una interfaz funcional puede heredar métodos abstractos de otras interfaces; si la suma total de métodos abstractos heredados es uno, sigue siendo funcional. Ejemplos comunes de interfaces funcionales en la API estándar de Java son `Consumer<T>` (recibe un valor y no devuelve nada), `Function<T,R>` (transforma un valor en otro), `Predicate<T>` (prueba una condición y devuelve un booleano) y `Supplier<T>` (proporciona un valor sin recibir argumentos). Sin estas interfaces funcionales, las expresiones lambda no podrían existir, ya que necesitan un tipo al que asociarse.
+
+variable de tipo Interfaces funcionales, les puedo asignar:
+    - Una expresión lambda.
+    - new UnaImplementacionQueProgrameYLePuseNombre();
+    - Referencia a método( :: ) Persona :: saludar
+    4 situaciones: (ejercicio 16)
+    1. Referencia a método estático -> Clase :: metodoEstatico
+    2. Referencia a constructor -> Clase :: new
+    3. Referencias a método de instancia ->
+    a) Sin instancia conocida -> Clase::metodo
+    b) Con instancia conocida -> instancia::metodo
 
 ## 11. Creemos una interfaz funcional a mano. Por ejemplo, define la interfaz funcional del ejemplo que transforma la cadena en otra. Llámale `Transformador`, que define una función que convierte una cadena de texto (`String`) en otra (`String`).
 
